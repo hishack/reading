@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Noto+Serif+SC:wght@300;400;600&display=swap');
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html, body {
+        margin: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #0a0a0a;
+      }
+
+      [data-composition-id="main"] {
+        position: relative;
+        width: 100%;
+        height: 100%;
+      }
+
+      /* Background decorative elements */
+      .bg-glow {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(120px);
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .bg-glow-1 {
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(196, 167, 110, 0.08) 0%, transparent 70%);
+        top: 20%;
+        left: 35%;
+      }
+
+      .bg-glow-2 {
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, rgba(180, 140, 80, 0.05) 0%, transparent 70%);
+        bottom: 15%;
+        right: 25%;
+      }
+
+      /* Thin horizontal accent line */
+      .accent-line {
+        position: absolute;
+        width: 120px;
+        height: 1px;
+        background: rgba(196, 167, 110, 0.25);
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 280px;
+        opacity: 0;
+        transform-origin: center;
+      }
+
+      /* Caption container */
+      .caption-area {
+        position: absolute;
+        width: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0 240px;
+      }
+
+      /* Per-segment container */
+      .segment {
+        position: absolute;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 18px;
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      /* English text - typewriter effect */
+      .en-text {
+        font-family: 'Space Mono', monospace;
+        font-weight: 700;
+        font-size: 52px;
+        color: #e8dcc8;
+        letter-spacing: 0.02em;
+        line-height: 1.3;
+        text-align: center;
+        max-width: 1400px;
+        min-height: 72px;
+      }
+
+      /* Typewriter character spans */
+      .en-text .char {
+        opacity: 0;
+      }
+
+      /* Cursor blink */
+      .cursor {
+        display: inline-block;
+        width: 3px;
+        height: 1em;
+        background: #c4a76e;
+        margin-left: 2px;
+        vertical-align: baseline;
+        opacity: 0;
+      }
+
+      /* Chinese text - no typewriter, simple fade */
+      .zn-text {
+        font-family: 'Noto Serif SC', serif;
+        font-weight: 300;
+        font-size: 36px;
+        color: rgba(196, 167, 110, 0.85);
+        letter-spacing: 0.15em;
+        line-height: 1.4;
+        text-align: center;
+      }
+
+      /* Decorative thin line under segment */
+      .segment-divider {
+        width: 40px;
+        height: 1px;
+        background: rgba(196, 167, 110, 0.3);
+        opacity: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="45"
+      data-width="1920"
+      data-height="1080"
+    >
+      <!-- Background decorative glows -->
+      <div class="bg-glow bg-glow-1" id="glow1"></div>
+      <div class="bg-glow bg-glow-2" id="glow2"></div>
+      <div class="accent-line" id="accent-line"></div>
+
+      <!-- Audio segments - each on its own track to avoid overlap -->
+      <audio id="audio-0" data-start="0" data-duration="2.68" data-track-index="10" src="assets/segment_001.wav" data-volume="1"></audio>
+      <audio id="audio-1" data-start="2.688" data-duration="2.51" data-track-index="11" src="assets/segment_002.wav" data-volume="1"></audio>
+      <audio id="audio-2" data-start="5.205" data-duration="1.47" data-track-index="12" src="assets/segment_003.wav" data-volume="1"></audio>
+      <audio id="audio-3" data-start="6.677" data-duration="1.49" data-track-index="13" src="assets/segment_004.wav" data-volume="1"></audio>
+      <audio id="audio-4" data-start="8.171" data-duration="1.96" data-track-index="14" src="assets/segment_005.wav" data-volume="1"></audio>
+      <audio id="audio-5" data-start="10.133" data-duration="1.85" data-track-index="15" src="assets/segment_006.wav" data-volume="1"></audio>
+      <audio id="audio-6" data-start="11.989" data-duration="2.0" data-track-index="16" src="assets/segment_007.wav" data-volume="1"></audio>
+      <audio id="audio-7" data-start="13.995" data-duration="1.51" data-track-index="17" src="assets/segment_008.wav" data-volume="1"></audio>
+      <audio id="audio-8" data-start="15.509" data-duration="1.17" data-track-index="18" src="assets/segment_009.wav" data-volume="1"></audio>
+      <audio id="audio-9" data-start="16.683" data-duration="1.89" data-track-index="19" src="assets/segment_010.wav" data-volume="1"></audio>
+      <audio id="audio-10" data-start="18.581" data-duration="2.55" data-track-index="20" src="assets/segment_011.wav" data-volume="1"></audio>
+      <audio id="audio-11" data-start="21.141" data-duration="1.49" data-track-index="21" src="assets/segment_012.wav" data-volume="1"></audio>
+      <audio id="audio-12" data-start="22.635" data-duration="1.64" data-track-index="22" src="assets/segment_013.wav" data-volume="1"></audio>
+      <audio id="audio-13" data-start="24.277" data-duration="1.27" data-track-index="23" src="assets/segment_014.wav" data-volume="1"></audio>
+      <audio id="audio-14" data-start="25.557" data-duration="1.57" data-track-index="24" src="assets/segment_015.wav" data-volume="1"></audio>
+      <audio id="audio-15" data-start="27.136" data-duration="2.87" data-track-index="25" src="assets/segment_016.wav" data-volume="1"></audio>
+      <audio id="audio-16" data-start="30.016" data-duration="2.04" data-track-index="26" src="assets/segment_017.wav" data-volume="1"></audio>
+      <audio id="audio-17" data-start="32.064" data-duration="2.94" data-track-index="27" src="assets/segment_018.wav" data-volume="1"></audio>
+      <audio id="audio-18" data-start="35.008" data-duration="1.19" data-track-index="28" src="assets/segment_019.wav" data-volume="1"></audio>
+      <audio id="audio-19" data-start="36.203" data-duration="1.7" data-track-index="29" src="assets/segment_020.wav" data-volume="1"></audio>
+      <audio id="audio-20" data-start="37.909" data-duration="1.98" data-track-index="30" src="assets/segment_021.wav" data-volume="1"></audio>
+      <audio id="audio-21" data-start="39.893" data-duration="1.81" data-track-index="31" src="assets/segment_022.wav" data-volume="1"></audio>
+      <audio id="audio-22" data-start="41.707" data-duration="2.64" data-track-index="32" src="assets/segment_023.wav" data-volume="1"></audio>
+
+      <!-- Caption area -->
+      <div class="caption-area" id="caption-area">
+        <!-- Segments will be generated by JS -->
+      </div>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+
+      var SEGMENTS = [
+        { en: "You feel anxious, because you are transforming.", zn: "你感到焦虑，因为你在蜕变。", start: 0.0, end: 2.688 },
+        { en: "You feel alone, because you are awakening.", zn: "你感到孤独，因为你在觉醒。", start: 2.688, end: 5.205 },
+        { en: "Nothing is wrong with you.", zn: "你没有错。", start: 5.205, end: 6.677 },
+        { en: "You are just on your way.", zn: "你只是在路上。", start: 6.677, end: 8.171 },
+        { en: "Every night you questioned your worth,", zn: "每一个你质疑自我价值的夜晚，", start: 8.171, end: 10.133 },
+        { en: "Every moment you felt out of place,", zn: "每一个你感到格格不入的瞬间，", start: 10.133, end: 11.989 },
+        { en: "Every tear you hid behind a smile —", zn: "每一滴你藏在微笑背后的眼泪——", start: 11.989, end: 13.995 },
+        { en: "They are not your weakness.", zn: "它们不是你的软弱。", start: 13.995, end: 15.509 },
+        { en: "They are your depth.", zn: "它们是你的深度。", start: 15.509, end: 16.683 },
+        { en: "You don't have to shine immediately.", zn: "你不必立刻闪耀。", start: 16.683, end: 18.581 },
+        { en: "You just have to keep the fire inside alive.", zn: "你只需要让内心的火种不灭。", start: 18.581, end: 21.141 },
+        { en: "One small step today.", zn: "今天一小步。", start: 21.141, end: 22.635 },
+        { en: "One small step tomorrow.", zn: "明天一小步。", start: 22.635, end: 24.277 },
+        { en: "Falling is fine.", zn: "跌倒也没关系。", start: 24.277, end: 25.557 },
+        { en: "Getting up is everything.", zn: "站起来就是一切。", start: 25.557, end: 27.136 },
+        { en: "One day, you will look back at this version of yourself —", zn: "总有一天，你会回望此刻的自己——", start: 27.136, end: 30.016 },
+        { en: "Tired, lost, but still moving.", zn: "疲惫、迷茫，却依然在前行。", start: 30.016, end: 32.064 },
+        { en: "And you will smile, because you never gave up on you.", zn: "然后你会微笑，因为你从未放弃过自己。", start: 32.064, end: 35.008 },
+        { en: "So keep going.", zn: "所以继续走吧。", start: 35.008, end: 36.203 },
+        { en: "Even when the road is silent.", zn: "即使路途寂静无声。", start: 36.203, end: 37.909 },
+        { en: "Even when no one claps for you.", zn: "即使没有人为你鼓掌。", start: 37.909, end: 39.893 },
+        { en: "Because this is your story.", zn: "因为这是你的故事。", start: 39.893, end: 41.707 },
+        { en: "And you are the one meant to write it till the end.", zn: "而你就是那个注定要把它写到最后一页的人。", start: 41.707, end: 44.352 }
+      ];
+
+      var captionArea = document.getElementById("caption-area");
+
+      // Build DOM for each segment
+      SEGMENTS.forEach(function (seg, i) {
+        var wrapper = document.createElement("div");
+        wrapper.className = "segment";
+        wrapper.id = "seg-" + i;
+
+        // English line with individual character spans for typewriter
+        var enEl = document.createElement("div");
+        enEl.className = "en-text";
+        enEl.id = "en-" + i;
+        var html = "";
+        for (var c = 0; c < seg.en.length; c++) {
+          var ch = seg.en[c];
+          if (ch === " ") {
+            html += '<span class="char" style="opacity:0">&nbsp;</span>';
+          } else {
+            html += '<span class="char" style="opacity:0">' + ch + '</span>';
+          }
+        }
+        // Cursor
+        html += '<span class="cursor" id="cursor-' + i + '"></span>';
+        enEl.innerHTML = html;
+
+        // Chinese line
+        var znEl = document.createElement("div");
+        znEl.className = "zn-text";
+        znEl.id = "zn-" + i;
+        znEl.textContent = seg.zn;
+
+        wrapper.appendChild(enEl);
+        wrapper.appendChild(znEl);
+        captionArea.appendChild(wrapper);
+      });
+
+      var tl = gsap.timeline({ paused: true });
+
+      // ===== Background ambient animations =====
+      tl.to("#glow1", { opacity: 0.6, scale: 1.1, duration: 8, ease: "sine.inOut", repeat: 5, yoyo: true }, 0);
+      tl.to("#glow2", { opacity: 0.5, scale: 1.08, duration: 6, ease: "sine.inOut", repeat: 7, yoyo: true }, 0);
+      tl.from("#accent-line", { scaleX: 0, opacity: 0, duration: 1.2, ease: "expo.out" }, 0.2);
+
+      // ===== Per-segment animation =====
+      SEGMENTS.forEach(function (seg, i) {
+        var segEl = document.getElementById("seg-" + i);
+        var enEl = document.getElementById("en-" + i);
+        var znEl = document.getElementById("zn-" + i);
+        var cursorEl = document.getElementById("cursor-" + i);
+        var chars = enEl.querySelectorAll(".char");
+
+        var segDur = seg.end - seg.start;
+        var typeStart = seg.start + 0.15; // small delay after segment start
+        var typeDuration = Math.min(segDur * 0.55, 1.2); // typewriter takes ~55% of segment, max 1.2s
+        var znFadeStart = typeStart + typeDuration * 0.5; // Chinese appears halfway through typing
+        var znFadeDur = 0.5;
+        var fadeOutStart = seg.end - 0.4;
+
+        // Make segment visible at start
+        tl.set(segEl, { opacity: 1, visibility: "visible" }, seg.start);
+
+        // Show cursor
+        tl.set(cursorEl, { opacity: 1 }, typeStart);
+
+        // Typewriter effect: reveal each character one by one
+        if (chars.length > 0) {
+          var charInterval = typeDuration / chars.length;
+          chars.forEach(function (ch, ci) {
+            tl.to(ch, { opacity: 1, duration: 0.01, ease: "none" }, typeStart + ci * charInterval);
+          });
+        }
+
+        // Cursor blink while typing, then fade out
+        tl.to(cursorEl, { opacity: 0, duration: 0.15, ease: "power2.in" }, typeStart + typeDuration + 0.3);
+
+        // Chinese text: simple fade in (no typewriter)
+        tl.set(znEl, { opacity: 0, y: 10 }, seg.start);
+        tl.to(znEl, { opacity: 1, y: 0, duration: znFadeDur, ease: "power2.out" }, znFadeStart);
+
+        // Fade out entire segment before end
+        tl.to(segEl, { opacity: 0, duration: 0.3, ease: "power2.in" }, fadeOutStart);
+        // Hard kill
+        tl.set(segEl, { opacity: 0, visibility: "hidden" }, seg.end);
+      });
+
+      // Extend timeline to cover full audio duration
+      tl.set({}, {}, 45);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
